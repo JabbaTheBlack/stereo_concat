@@ -1,6 +1,6 @@
 #include <memory>
 #include "rclcpp/rclcpp.hpp"
-#include "../include/StereoConcatNode.hpp"
+#include "StereoConcatNode.hpp"
 
 int main(int argc, char ** argv)
 {

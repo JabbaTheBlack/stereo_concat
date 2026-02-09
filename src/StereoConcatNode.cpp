@@ -1,7 +1,7 @@
 #include <mutex>
 #include <memory>
 #include <functional>
-#include "../include/StereoConcatNode.hpp"
+#include "StereoConcatNode.hpp"
 
 #include "rclcpp/rclcpp.hpp"
 
@@ -75,16 +75,18 @@ namespace stereo_concat
   void StereoConcatNode::TimerCallback()
   {
     cv::Mat stitched_image;
+    std_msgs::msg::Header header;
     {
       std::scoped_lock lock(image_mutex_);
       if (latest_stitched_image_.empty()) [[unlikely]] {
-        RCLCPP_INFO(this->get_logger(), "No images received yet, skipping publish.");
+        RCLCPP_DEBUG(this->get_logger(), "No images received yet, skipping publish.");
         return;
       }
       stitched_image = latest_stitched_image_.clone();
+      header = latest_header_;
     }
 
-    sensor_msgs::msg::Image::SharedPtr output_msg = cv_bridge::CvImage(latest_header_, "bgr8", stitched_image).toImageMsg();
+    sensor_msgs::msg::Image::SharedPtr output_msg = cv_bridge::CvImage(header, "bgr8", stitched_image).toImageMsg();
     publisher_->publish(*output_msg);
   }
 } // namespace stereo_concat

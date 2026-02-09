@@ -5,6 +5,7 @@
 #include "rclcpp/rclcpp.hpp"
 #include "sensor_msgs/msg/compressed_image.hpp"
 #include "sensor_msgs/msg/image.hpp"
+#include "std_msgs/msg/header.hpp"
 
 #include <message_filters/subscriber.h>
 #include <message_filters/time_synchronizer.h>
