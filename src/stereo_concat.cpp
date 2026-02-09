@@ -1,10 +1,12 @@
-#include <cstdio>
+#include <memory>
+#include "rclcpp/rclcpp.hpp"
+#include "StereoConcatNode.hpp"
 
 int main(int argc, char ** argv)
 {
-  (void) argc;
-  (void) argv;
+  rclcpp::init(argc, argv);
+  rclcpp::spin(std::make_shared<stereo_concat::StereoConcatNode>());
+  rclcpp::shutdown();
 
-  printf("hello world stereo_concat package\n");
   return 0;
 }
