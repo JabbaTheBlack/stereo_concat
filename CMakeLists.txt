@@ -8,27 +8,50 @@ endif()
 # find dependencies
 find_package(ament_cmake REQUIRED)
 find_package(rclcpp REQUIRED)
+find_package(std_msgs REQUIRED)
 find_package(sensor_msgs REQUIRED)
 find_package(cv_bridge REQUIRED)
-find_package(std_msgs REQUIRED)
 find_package(message_filters REQUIRED)
+find_package(OpenCV REQUIRED)
 
-add_executable(stereo_concat src/stereo_concat.cpp)
+add_executable(stereo_concat 
+ src/main.cpp
+ src/stereo_concat_node.cpp
+)
 target_include_directories(stereo_concat PUBLIC
   $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
   $<INSTALL_INTERFACE:include>)
+
 target_compile_features(stereo_concat PUBLIC c_std_99 cxx_std_17)  # Require C99 and C++17
+
 ament_target_dependencies(
   stereo_concat
-  "rclcpp"
-  "sensor_msgs"
-  "cv_bridge"
-  "std_msgs"
-  "message_filters"
+  rclcpp
+  sensor_msgs
+  cv_bridge
+  std_msgs
+  message_filters
 )
 
-install(TARGETS stereo_concat
-  DESTINATION lib/${PROJECT_NAME})
+target_link_libraries(stereo_concat ${OpenCV_LIBRARIES})
+
+install(TARGETS 
+  stereo_concat
+  DESTINATION lib/${PROJECT_NAME}
+)
+
+install(DIRECTORY launch
+  DESTINATION share/${PROJECT_NAME}
+)
+
+install(DIRECTORY config
+  DESTINATION share/${PROJECT_NAME}
+)
+
+install(FILES
+  onboarding.mcap
+  DESTINATION share/${PROJECT_NAME}
+)
 
 if(BUILD_TESTING)
   find_package(ament_lint_auto REQUIRED)
