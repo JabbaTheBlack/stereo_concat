@@ -4,7 +4,7 @@
   <name>stereo_concat</name>
   <version>0.0.0</version>
   <description>Stereo Concatenator</description>
-  <maintainer email="mezo.kerekesmark@gmail.com">jabba</maintainer>
+  <maintainer email="gergocsige@proton.me">gergocsige</maintainer>
   <license>MIT</license>
 
   <buildtool_depend>ament_cmake</buildtool_depend>
