@@ -13,7 +13,10 @@ find_package(cv_bridge REQUIRED)
 find_package(std_msgs REQUIRED)
 find_package(message_filters REQUIRED)
 
-add_executable(stereo_concat src/stereo_concat.cpp)
+add_executable(stereo_concat
+  src/stereo_concat.cpp
+  src/StereoConcatNode.cpp
+)
 target_include_directories(stereo_concat PUBLIC
   $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
   $<INSTALL_INTERFACE:include>)
@@ -29,6 +32,15 @@ ament_target_dependencies(
 
 install(TARGETS stereo_concat
   DESTINATION lib/${PROJECT_NAME})
+
+install(DIRECTORY config
+  DESTINATION share/${PROJECT_NAME})
+
+install(DIRECTORY launch
+  DESTINATION share/${PROJECT_NAME})
+
+install(DIRECTORY bags
+  DESTINATION share/${PROJECT_NAME})
 
 if(BUILD_TESTING)
   find_package(ament_lint_auto REQUIRED)
