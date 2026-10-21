@@ -1,0 +1,9 @@
+stereo_concat_node:
+  ros__parameters:
+
+    topics:
+      # Name of the topic for the left image to be subscribed.
+      left_image: "/left/image_rect_color/compressed"
+      
+      # Name of the topic for the right image to be subscribed.
+      right_image: "/right/image_rect_color/compressed"
