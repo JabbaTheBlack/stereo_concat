@@ -1,2 +1,6 @@
 onboarding.mcap
 .vscode
+imu_preprocessing.zip
+/build
+/install
+/log
