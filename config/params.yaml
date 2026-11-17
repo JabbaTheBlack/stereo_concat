@@ -5,3 +5,5 @@
     
     # Name of the topic for the right image to be subscribed.
     right_image: "/right/image_rect_color/compressed"
+    
+    hz: 50

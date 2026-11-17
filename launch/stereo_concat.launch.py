@@ -1,4 +1,5 @@
 import os
+from datetime import datetime
 from launch import LaunchDescription
 from launch.actions import DeclareLaunchArgument, ExecuteProcess
 from launch.conditions import IfCondition
@@ -12,10 +13,14 @@ def generate_launch_description():
 
     package_path = get_package_share_directory('stereo_concat')
     config = os.path.join(package_path, 'config', 'params.yaml')
-    bags_path = os.path.join(package_path, 'bags')
+    bags_path = os.environ.get(
+        'STEREO_CONCAT_BAGS_DIR',
+        os.path.join(package_path, 'bags')
+    )
     bag_path = os.path.join(bags_path, 'onboarding.mcap')
     record_bag = LaunchConfiguration('record_bag')
-    record_output = os.path.join(bags_path, 'stereo_concat_recording')
+    recording_name = datetime.now().strftime('stereo_concat_recording_%Y%m%d_%H%M%S')
+    record_output = os.path.join(bags_path, recording_name)
     ld.add_action(
         DeclareLaunchArgument(
             'record_bag',
@@ -23,14 +28,6 @@ def generate_launch_description():
             description='Record all topics to a new bag'
         )
     )
-    ld.add_action(
-        DeclareLaunchArgument(
-            'record_output',
-            default_value='stereo_concat_recording',
-            description='Directory for the new bag'
-        )
-    )
-
     stereo_concat_node = Node(
         package='stereo_concat',
         executable='stereo_concat',
@@ -48,7 +45,12 @@ def generate_launch_description():
     )
     ld.add_action(
         ExecuteProcess(
-            cmd=['ros2', 'bag', 'record', '-a', '-o', record_output],
+            cmd=[
+                'ros2', 'bag', 'record',
+                '/sync_image_topic',
+                '--storage', 'mcap',
+                '-o', record_output
+            ],
             output='screen',
             condition=IfCondition(record_bag)
         )

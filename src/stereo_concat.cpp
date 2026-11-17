@@ -1,4 +1,3 @@
-#include <cstdio>
 #include "rclcpp/rclcpp.hpp"
 
 #include "stereo_concat_node_handler.hpp"
