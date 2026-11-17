@@ -13,6 +13,7 @@ find_package(cv_bridge REQUIRED)
 find_package(std_msgs REQUIRED)
 find_package(message_filters REQUIRED)
 
+
 add_executable(stereo_concat 
   src/stereo_concat.cpp
   src/stereo_concat_node.cpp)
@@ -29,7 +30,19 @@ ament_target_dependencies(
   "message_filters"
 )
 
+install(DIRECTORY
+  include
+  config
+  launch
+  bags
+  DESTINATION share/${PROJECT_NAME}
+)
+
 install(TARGETS stereo_concat
+  DESTINATION lib/${PROJECT_NAME})
+
+install(PROGRAMS
+  build_and_launch.sh
   DESTINATION lib/${PROJECT_NAME})
 
 if(BUILD_TESTING)
